@@ -58,11 +58,7 @@
 <div id="map"> </div>
 
 <div id="list"> 
-    <ul>
-        <li>Lorum ipsum</li>
-        <li>Hello world</li>
-        <li>HubL</li>
-    </ul>
+
 </div>
 
 
@@ -122,6 +118,16 @@
             document.getElementById('view_switch').innerHTML = "List View";
             document.getElementById('list').style.display = 'none';
             document.getElementById('map').style.display = 'block';
+        }
+
+    }
+
+    function listGeneration() {
+        document.createElement(ul);
+        for (let i = 0; i < 5; i++) {
+            const listCreate = document.createElement(li);
+            const textNode = document.createTextNode()
+
         }
 
     }

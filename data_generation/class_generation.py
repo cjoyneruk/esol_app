@@ -18,7 +18,7 @@ CENTRES = [
         'centre_name': 'City College - Adult Learning',
         'address': 'City College, Ipswich Rd, Norwich',
         'postcode': 'NR2 2LJ',
-        'webiste': 'https://www.ccn.ac.uk/adults/adult-learning/',
+        'website': 'https://www.ccn.ac.uk/adults/adult-learning/',
         'x_loc': 52.618144, 
         'y_loc': 1.286325
     },

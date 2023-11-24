@@ -13,11 +13,10 @@ async function getLocation() {
         // Handle the response data here
 
         const coords = {
-            x: data.result.longitude,
-            y: data.result.latitude
+            x: data.result.latitude,
+            y: data.result.longitude
         }
 
-        console.log(coords);
         return coords
 
     } catch (error) {
@@ -40,7 +39,7 @@ function get_Distance_From_LatLonInKm(x1, y1, x2, y2) {
     a = (Math.sin(dLat/2))**2 + Math.cos(Lat1) * Math.cos(Lat2) * (Math.sin(dLong/2))**2;
     c = 2 * Math.atan2 (Math.sqrt(a), Math.sqrt(1-a));
     d = 6371 * c;
-    console.log(d);
+    // console.log(d);
 
     return Math.round(d*100)/100;
 
@@ -48,10 +47,14 @@ function get_Distance_From_LatLonInKm(x1, y1, x2, y2) {
 
 function filterData(level, distance, userLocationX, userLocationY, data){
 
+    console.log(data.length)
+
     // filter data by level
     const levelfilter = data.filter(function(dataset) {
         return dataset.level == level;
     });
+
+    console.log(levelfilter.length)
 
     // Add distance to data
     levelfilter.forEach(function (element) {

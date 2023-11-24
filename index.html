@@ -57,6 +57,7 @@
 
 <div id="map"></div>
 
+
 <div class="container">
     <div id="centre_name">
 
@@ -131,14 +132,17 @@
         });
 
         levelfilter.forEach(function (element) {
-            userXRad = userLocationX * (Math.PI/180);
-            userYRad = userLocationY * (Math.PI/180);
-            centreXRad = element.x_loc * (Math.PI/180);
-            centreYRad = element.y_loc * (Math.PI/180);
+            Long1 = userLocationX * (Math.PI/180);
+            Lat1 = userLocationY * (Math.PI/180);
+            Long2 = element.x_loc * (Math.PI/180);
+            Lat2 = element.y_loc * (Math.PI/180);
+            dLat = Lat2 - Lat1;
+            dLong = Long2 - Long1;
+            
 
-            a = (Math.sin((centreYRad - userYRad)/2))**2 + Math.cos(userYRad) * Math.cos(centreYRad) * (Math.sin((centreXRad - userXRad)/2))**2;
+            a = (Math.sin(dLat/2))**2 + Math.cos(Lat1) * Math.cos(Lat2) * (Math.sin(dLong/2))**2;
             c = 2 * Math.atan2 (Math.sqrt(a), Math.sqrt(1-a));
-            d = (6371 * c)/1000;
+            d = 6371 * c;
             console.log(d);
 
             let distanceAway = Math.round(d*100)/100;

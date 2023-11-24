@@ -129,9 +129,11 @@
 
     }
 
-    function listGeneration() {
+    function listGeneration(data) {
         document.createElement(ul);
-        for (let i = 0; i < 5; i++) {
+
+        for (let i = 0; i < data.length; i++) {
+            el = data[i]
             const listCreate = document.createElement(li);
             const textNode = document.createTextNode()
 
@@ -194,21 +196,52 @@
 
     async function updateMap(loc_x, loc_y, data){
         
-        console.log(data.length)
-        
         try {
             
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+
+
             L.marker([loc_x, loc_y], {icon: redIcon}).addTo(map)
             map.panTo([loc_x, loc_y]);
             
-            // for (let i = 0; i < 2; i++) {
-            //     const el = data[i];
-            //     L.marker([el.x_loc, el.y_loc]).addTo(map)
+            var centre_list = []
+            var centre_count = {}
+
+            // Append centres to list
+            for (let i = 0; i < data.length; i++) {
+
+                    let el = {
+                        id: data[i].centre_id,
+                        x_loc : data[i].x_loc,
+                        y_loc : data[i].y_loc
+                    }
+                    
+                    if (!centre_list.includes(el)) {
+                    centre_list.push(el)
+                }
+
+                centre_count[data[i].centre_id] = centre_count[data[i].centre_id] ? centre_count[data[i].centre_id] + 1 : 1
+            }
+
+            console.log(centre_count)
+
+            for (let i = 0; i < centre_list.length; i++) {
+                let el = centre_list[i];
+                L.marker([el.x_loc, el.y_loc]).addTo(map)
+                    .bindPopup(`el.centre_name - ${centre_count[el.id]} classes`)
+                    .openPopup()
+            }
+            
+
+            // L.marker([el.x_loc, el.y_loc]).addTo(map)
             //         .bindPopup(el.centre_name)
             //         .on('click', () => {
             //             document.getElementById('centre_name').innerHTML = el.centre_name;
             //         });
-            // }
 
         } catch (error) {
             console.error('Error initializing map:', error);
@@ -218,6 +251,7 @@
     async function updateAll(get_location) {
         const data = await updateData(get_location);
         updateMap(loc_x, loc_y, data);
+        // updateList(data);
     }
 
     initAll()

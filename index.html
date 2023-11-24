@@ -15,30 +15,76 @@
             height: 600px; 
             width: 800px;
         }
+
+        .container {
+            max-width: 1200;
+        }
+
     </style>
 </head>
 <body>
 
 <div id="map"></div>
 
+<div class="container">
+    <div id="centre_name">
+
+    </div>
+</div>
+
 <script>
     // Initialize the map and set its view to our chosen geographical coordinates and a zoom level:
+    const location_x = 52.62783;
+    const location_y = 1.29834;
 
-    const location_x = 52.62783
-    const location_y = 1.29834
+    async function fetchData() {
+        try {
+            const response = await fetch('data/entries.json');
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
 
-    var map = L.map('map').setView([location_x, location_y], 13);
+    async function initializeMap() {
+        const location_x = 52.62783;
+        const location_y = 1.29834;
 
-    // Add a tile layer to add to our map:
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+        const map = L.map('map').setView([location_x, location_y], 13);
 
-    // Add a marker at the same coordinates:
-    L.marker([location_x, location_y]).addTo(map)
-        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        try {
+            const data = await fetchData();
+            console.log(data);
+
+            for (let i = 0; i < 2; i++) {
+                const el = data[i];
+                L.marker([el.x_loc, el.y_loc]).addTo(map)
+                    .bindPopup(el.centre_name)
+                    .on('click', () => {
+                        document.getElementById('centre_name').innerHTML = el.centre_name;
+                    });
+                    // .openPopup();
+            }
+            
+            console.log(map)
+
+        } catch (error) {
+            console.error('Error initializing map:', error);
+        }
+    }
+
+    initializeMap();
+    </script>
+
+
+
+    
 </script>
 
 </body>

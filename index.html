@@ -53,9 +53,17 @@
 <button class="btn" onclick="getCoords()">Find classes</button>
 </div>
 
+<button class="btn" id ="view_switch" onclick="viewSwitcher()">List View</button>
 
+<div id="map"> </div>
 
-<div id="map"></div>
+<div id="list"> 
+    <ul>
+        <li>Lorum ipsum</li>
+        <li>Hello world</li>
+        <li>HubL</li>
+    </ul>
+</div>
 
 
 <div class="container">
@@ -167,6 +175,19 @@
 
     var level = '1'
     var distance = 1
+
+    function viewSwitcher() {
+        if (document.getElementById('view_switch').innerHTML == "List View") {
+            document.getElementById('view_switch').innerHTML = "Map View";
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('list').style.display = 'block';
+        } else {
+            document.getElementById('view_switch').innerHTML = "List View";
+            document.getElementById('list').style.display = 'none';
+            document.getElementById('map').style.display = 'block';
+        }
+
+    }
 
     function updateLevel() {
         level = document.getElementById("level_dropdown").value;

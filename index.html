@@ -94,113 +94,61 @@
     </div>
 </div>
 
-<h2>Filter classes</h2>
 
-<form id="user_form">
-    
-    Level
-    <select id="level_dropdown" onchange="updateLevel()">
-        <option value="1">ES1</option>
-        <option value="2">ES2</option>
-        <option value="3">ES3</option>
-        <option value="4">L1</option>
-        <option value="5">L2</option>
-    </select>
-    
-    Distance
-    <select id="distance_dropdown" onchange="updateDistance()">
-        <option value="1">Less than 1 km</option>
-        <option value="2">Less than 2 km</option>
-        <option value="5">Less than 5 km</option>
-    </select>
-    
-    </form>
+<script src="js/utils.js"></script>
 
-<script src="js/postcode.js"></script>
-
-<script src="data/entries.js"></script>
-<script src="javascript/index.js"></script>
 <script>
 
 
     // Initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
-    function datafilter (level, distance, userLocationX, userLocationY, data){
-        const levelfilter = data.filter(function(dataset) {
-            return dataset.level == "ES3";
+    const default_x = 52.62783
+    const default_y = 1.29834
 
-        });
+    var data = []
 
-        levelfilter.forEach(function (element) {
-            Long1 = userLocationX * (Math.PI/180);
-            Lat1 = userLocationY * (Math.PI/180);
-            Long2 = element.x_loc * (Math.PI/180);
-            Lat2 = element.y_loc * (Math.PI/180);
-            dLat = Lat2 - Lat1;
-            dLong = Long2 - Long1;
-            
-
-            a = (Math.sin(dLat/2))**2 + Math.cos(Lat1) * Math.cos(Lat2) * (Math.sin(dLong/2))**2;
-            c = 2 * Math.atan2 (Math.sqrt(a), Math.sqrt(1-a));
-            d = 6371 * c;
-            console.log(d);
-
-            let distanceAway = Math.round(d*100)/100;
-
-            Object.assign(element, {distance: distanceAway});
-        });
-
-        const distancefilter = data.filter(function(item) {
-            return item.distance < distance;
-        });
-
-        console.log(distancefilter);
-
-
-
-    }
-
-    datafilter ("ES3", 10, 52.6221, 1.2411, data);
-
-    const location_x = 52.62783
-    const location_y = 1.29834
-
-    var level = '1'
-    var distance = 1
-
-    function updateLevel() {
-        level = document.getElementById("level_dropdown").value;
+    function getLevel() {
+        return document.getElementById("level_dropdown").value;
         // console.log(level);
     }
 
-    function updateDistance() {
-        distance = parseInt(document.getElementById("distance_dropdown").value);
+    function getDistance() {
+        return parseInt(document.getElementById("distance_dropdown").value);
         // console.log(distance);
     }
 
-    async function fetchData() {
-        try {
-            const response = await fetch('data/entries.json');
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
+    function initializeMap() {
 
-    async function initializeMap() {
-        const location_x = 52.62783;
-        const location_y = 1.29834;
-
-        const map = L.map('map').setView([location_x, location_y], 13);
+        const map = L.map('map').setView([default_x, default_y], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
+    }
+
+    async function initData(){
+        const data = await fetchData();
+    }
+
+    async function initAll(){
+        await initData();
+        initializeMap();
+    }
+
+    async function updateData(){
+        const loc = await getLocation();
+        const level = getLevel()
+        const distance = getDistance()
+
+
+    }
+
+    async function updateMap(){
+
         try {
-            const data = await fetchData();
+            
             // console.log(data);
 
             for (let i = 0; i < 2; i++) {
@@ -217,7 +165,7 @@
         }
     }
 
-    initializeMap();
+    initializeAll()
 </script>
 
 </body>

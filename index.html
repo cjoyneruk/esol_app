@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Leaflet Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Load Leaflet from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Ensure Leaflet is accessible from any local files when using Live Server -->
+    <style>
+        #map { 
+            height: 600px; 
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+    // Initialize the map and set its view to our chosen geographical coordinates and a zoom level:
+
+    const location_x = 52.62783
+    const location_y = 1.29834
+
+    var map = L.map('map').setView([location_x, location_y], 13);
+
+    // Add a tile layer to add to our map:
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add a marker at the same coordinates:
+    L.marker([location_x, location_y]).addTo(map)
+        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        .openPopup();
+</script>
+
+</body>
+</html>

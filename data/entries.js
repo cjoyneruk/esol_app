@@ -1,4 +1,6 @@
-data = [
+
+
+var data = [
     {
         "id": 2,
         "centre_id": 2,
@@ -14,8 +16,8 @@ data = [
         "centre_id": 3,
         "centre_name": "Centre 3",
         "level": "ES3",
-        "x_loc": 3,
-        "y_loc": 7,
+        "x_loc": 52.6178,
+        "y_loc": 1.2869,
         "time_start": "2019-01-01T10:00:00",
         "time_end": "2019-01-01T11:00:00"
     },
@@ -40,3 +42,4 @@ data = [
         "time_end": "2019-01-01T13:00:00"
     }
 ]
+

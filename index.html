@@ -21,8 +21,44 @@
 
 <div id="map"></div>
 
+<script src="data/entries.js"></script>
+<script src="javascript/index.js"></script>
 <script>
     // Initialize the map and set its view to our chosen geographical coordinates and a zoom level:
+
+    function datafilter (level, distance, userLocationX, userLocationY, data){
+        const levelfilter = data.filter(function(dataset) {
+            return dataset.level == "ES3";
+
+        });
+
+        levelfilter.forEach(function (element) {
+            userXRad = userLocationX * (Math.PI/180);
+            userYRad = userLocationY * (Math.PI/180);
+            centreXRad = element.x_loc * (Math.PI/180);
+            centreYRad = element.y_loc * (Math.PI/180);
+
+            a = (Math.sin((centreYRad - userYRad)/2))**2 + Math.cos(userYRad) * Math.cos(centreYRad) * (Math.sin((centreXRad - userXRad)/2))**2;
+            c = 2 * Math.atan2 (Math.sqrt(a), Math.sqrt(1-a));
+            d = (6371 * c)/1000;
+            console.log(d);
+
+            let distanceAway = Math.round(d*100)/100;
+
+            Object.assign(element, {distance: distanceAway});
+        });
+
+        const distancefilter = data.filter(function(item) {
+            return item.distance < distance;
+        });
+
+        console.log(distancefilter);
+
+
+
+    }
+
+    datafilter ("ES3", 10, 52.6221, 1.2411, data);
 
     const location_x = 52.62783
     const location_y = 1.29834

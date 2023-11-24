@@ -10,37 +10,50 @@
     <!-- Load Leaflet from CDN -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
+    <link rel="stylesheet" href="css/esol_style.css" />
     <!-- Ensure Leaflet is accessible from any local files when using Live Server -->
     <style>
+        *{
+            margin:0px;
+            padding: 0px;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            line-height: 1.6em;
+            background-color: #f4f4f4;
+            color: #555;
+        }
+
         #map { 
-            height: 600px; 
-            width: 800px;
+            height: 261px; 
+            width: 390px;
         }
 
         .container {
-            max-width: 1200;
+            max-width: 390px;
+            padding: 10px;
         }
 
     </style>
 </head>
 <body>
 
+<div class="container">
+    <h1>ESOL Centres</h1>
+    <h2>Find your nearest ESOL centre</h2>
+</div>
 
-
-<!-- Add dropdown menu -->
-<form id="user_form">
-
-<select id="dropdown">
-    <option value="1">ES1</option>
-    <option value="2">ES2</option>
-    <option value="3">ES3</option>
-    <option value="4">L1</option>
-    <option value="5">L2</option>
-</select>
+<div class="container">
+    <p>Enter your postcode to find your nearest ESOL centre</p>
+<form id="postcode_form">
+    <input type="text" id="postcode" name="postcode" placeholder="Enter your postcode" style="height: 20px;">
 </form>
+<button class="btn" onclick="getCoords()">Find classes</button>
+</div>
 
-<btn class="btn">Update</btn>
+
 
 <div id="map"></div>
 
@@ -50,10 +63,49 @@
     </div>
 </div>
 
+<h2>Filter classes</h2>
+
+<form id="user_form">
+    
+    Level
+    <select id="level_dropdown" onchange="updateLevel()">
+        <option value="1">ES1</option>
+        <option value="2">ES2</option>
+        <option value="3">ES3</option>
+        <option value="4">L1</option>
+        <option value="5">L2</option>
+    </select>
+    
+    Distance
+    <select id="distance_dropdown" onchange="updateDistance()">
+        <option value="1">Less than 1 km</option>
+        <option value="2">Less than 2 km</option>
+        <option value="5">Less than 5 km</option>
+    </select>
+    
+    </form>
+
+<script src="js/postcode.js"></script>
+
 <script>
+
+
     // Initialize the map and set its view to our chosen geographical coordinates and a zoom level:
     const location_x = 52.62783;
     const location_y = 1.29834;
+
+    var level = '1'
+    var distance = 1
+
+    function updateLevel() {
+        level = document.getElementById("level_dropdown").value;
+        // console.log(level);
+    }
+
+    function updateDistance() {
+        distance = parseInt(document.getElementById("distance_dropdown").value);
+        // console.log(distance);
+    }
 
     async function fetchData() {
         try {
@@ -78,7 +130,7 @@
 
         try {
             const data = await fetchData();
-            console.log(data);
+            // console.log(data);
 
             for (let i = 0; i < 2; i++) {
                 const el = data[i];
@@ -88,8 +140,6 @@
                         document.getElementById('centre_name').innerHTML = el.centre_name;
                     });
             }
-            
-            console.log(map)
 
         } catch (error) {
             console.error('Error initializing map:', error);

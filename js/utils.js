@@ -6,8 +6,6 @@ async function getLocation() {
     try {
         const formattedPostcode = postcode.toLowerCase().replace(/\s/g, '');
 
-        // console.log('Postcode', formattedPostcode);
-
         const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}`);
         const data = await response.json();
         // Handle the response data here
@@ -45,33 +43,35 @@ function get_Distance_From_LatLonInKm(x1, y1, x2, y2) {
 
 }
 
-function filterData(level, distance, userLocationX, userLocationY, data){
+function filterData(level, distance, userLocationX, userLocationY, data) {
+    console.log(data.length);
 
-    console.log(data.length)
-
-    // filter data by level
-    const levelfilter = data.filter(function(dataset) {
+    // Filter data by level
+    const levelFilter = data.filter(function(dataset) {
         return dataset.level == level;
     });
 
-    console.log(levelfilter.length)
+    console.log(levelFilter.length);
 
     // Add distance to data
-    levelfilter.forEach(function (element) {
-
+    levelFilter.forEach(function(element) {
         element['distance'] = get_Distance_From_LatLonInKm(userLocationX, userLocationY, element.x_loc, element.y_loc);
-        // Long1 = userLocationX * (Math.PI/180);
-        // Lat1 = userLocationY * (Math.PI/180);
-        // Long2 = element.x_loc * (Math.PI/180);
-        // Lat2 = element.y_loc * (Math.PI/180);
-
-        // Object.assign(element, {distance: distanceAway});
     });
 
-    return data.filter(function(item) {
+    // Filter data by distance
+    const distanceFilter = levelFilter.filter(function(item) {
         return item.distance < distance;
     });
 
+    // Sort data by distance and time_start
+    const sortedData = distanceFilter.sort(function(a, b) {
+        if (a.distance === b.distance) {
+            return a.time_start.localeCompare(b.time_start);
+        }
+        return a.distance - b.distance;
+    });
+
+    return sortedData;
 }
 
 async function fetchData() {

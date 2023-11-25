@@ -91,7 +91,7 @@ if __name__ == '__main__':
     df_centres = pd.DataFrame(CENTRES)
 
     df = df.merge(df_centres, how='left', on='centre_id')
-
+    
     json_string = df.to_json(orient='records', indent=4)
 
     with open('../data/entries.json', 'w') as file:

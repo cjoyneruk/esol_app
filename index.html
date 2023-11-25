@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple Leaflet Map</title>
+    <title>HubL - Find a class provider</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,52 +10,36 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="css/esol_style.css" />
     <!-- Ensure Leaflet is accessible from any local files when using Live Server -->
-    <style>
-        *{
-            margin:0px;
-            padding: 0px;
-        }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            line-height: 1.6em;
-            background-color: #f4f4f4;
-            color: #555;
-        }
-
-        #map { 
-            height: 261px; 
-            width: 390px;
-        }
-
-        .container {
-            max-width: 390px;
-            padding: 10px;
-        }
-
-    </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>ESOL Centres</h1>
-    <h2>Find your nearest ESOL centre</h2>
-</div>
+<!-- <div>
+    <svg class="logo" viewBox="0 0 162 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.669 29.4292H23.167V48.205H43.6186V29.4292H50.0824V73H43.6186V53.848H23.167V73H16.669V29.4292ZM78.1312 39.997H84.6634V73H78.1312V39.997ZM55.1488 39.997H61.6468V60.3802C61.6468 62.8654 62.251 64.7464 63.4594 66.0232C64.6906 67.3 66.412 67.9384 68.6236 67.9384C70.4932 67.9384 72.1348 67.4482 73.5484 66.4678C74.9848 65.4874 76.102 64.0966 76.9 62.2954C77.7208 60.4942 78.1312 58.3624 78.1312 55.9H80.2174C80.2174 59.7532 79.693 62.9908 78.6442 65.6128C77.5954 68.2348 76.1248 70.2298 74.2324 71.5978C72.34 72.943 70.1284 73.6156 67.5976 73.6156C65.1808 73.6156 63.0262 73.171 61.1338 72.2818C59.2642 71.3926 57.7936 70.0246 56.722 68.1778C55.6732 66.3082 55.1488 63.9028 55.1488 60.9616V39.997ZM106.295 73.8892C104.152 73.8892 102.203 73.3192 100.447 72.1792C98.7144 71.0164 97.3236 69.3064 96.2748 67.0492C95.2488 64.792 94.7358 62.0218 94.7358 58.7386H96.9588C96.9588 60.6538 97.3692 62.3068 98.19 63.6976C99.0336 65.0884 100.105 66.16 101.405 66.9124C102.704 67.642 104.061 68.0068 105.475 68.0068C107.162 68.0068 108.678 67.5394 110.023 66.6046C111.391 65.6698 112.474 64.336 113.272 62.6032C114.093 60.8476 114.503 58.7842 114.503 56.413C114.503 54.0646 114.104 52.0468 113.306 50.3596C112.508 48.6496 111.425 47.3386 110.057 46.4266C108.689 45.4918 107.139 45.0244 105.406 45.0244C103.947 45.0244 102.568 45.3778 101.268 46.0846C99.9912 46.7914 98.9538 47.8402 98.1558 49.231C97.3578 50.599 96.9588 52.2748 96.9588 54.2584H94.7358C94.7358 51.0436 95.2374 48.319 96.2406 46.0846C97.2438 43.8502 98.6346 42.1516 100.413 40.9888C102.214 39.8032 104.323 39.2104 106.74 39.2104C109.362 39.2104 111.756 39.9172 113.922 41.3308C116.111 42.7216 117.855 44.7052 119.155 47.2816C120.477 49.858 121.138 52.9018 121.138 56.413C121.138 59.947 120.466 63.025 119.12 65.647C117.775 68.2462 115.974 70.2754 113.717 71.7346C111.482 73.171 109.009 73.8892 106.295 73.8892ZM90.4608 73V26.2486H96.9588V65.0998L94.8726 73H90.4608ZM131.95 29.4292V67.3228H150.726V73H125.452V29.4292H131.95Z" fill="black"/>
+    </svg>
+</div> -->
 
 <div class="container">
-    <p>Enter your postcode to find your nearest ESOL centre</p>
-<form id="postcode_form">
-    <input type="text" id="postcode" name="postcode" placeholder="Enter your postcode" style="height: 20px;">
-</form>
-<button class="btn" onclick="updateAll(true)">Find classes</button>
+    <h2 class="main_header">Find a Class Provider</h2>
+    <p>Enter your postcode and use the filters to find providers near your location</p>
 </div>
+
+<div class="container postcode_form">
+
+<form id="postcode_form" method="post" onsubmit="updateAll(true)">
+    <input type="text" id="postcode" name="postcode" placeholder="Enter your postcode">
+</form>
+<!-- <button class="btn" onclick=>Find classes</button> -->
 
 <button class="btn" id ="view_switch" onclick="viewSwitcher()">List View</button>
 
+</div>
+
+
 <div id="map"> </div>
 
-<div id="list"> 
+<div id="list" class="container">
 
 </div>
 
@@ -66,39 +50,43 @@
     </div>
 </div>
 
-<h2>Filter classes</h2>
+<div class="container">
+
+<h3>Filter classes</h3>
 
 <form id="user_form">
     
-    Level
+    <p>Level</p>
     <select id="level_dropdown" onchange="updateAll(false)">
-        <option value="E1">ES1</option>
-        <option value="E2">ES2</option>
-        <option value="E3">ES3</option>
+        <option value="E1">E1</option>
+        <option value="E2">E2</option>
+        <option value="E3">E3</option>
         <option value="L1">L1</option>
         <option value="L2">L2</option>
     </select>
     
-    Distance
+    <p>Distance</p>
     <select id="distance_dropdown" onchange="updateAll(false)">
         <option value="1">Less than 1 km</option>
         <option value="2">Less than 2 km</option>
         <option value="5">Less than 5 km</option>
+        <option value="10" selected>Less than 10 km</option>
+        <option value="20">Less than 20 km</option>
     </select>
     
     </form>
 
-<div class="container">
-    <div id="centre_name">
-
-    </div>
 </div>
-
 
 <script src="js/utils.js"></script>
 
 <script>
 
+    document.getElementById('postcode_form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // You can add your code here to handle the form submission, e.g., using AJAX
+    });
+    
     const default_x = 52.62783
     const default_y = 1.29834
 
@@ -129,9 +117,11 @@
 
     }
 
-    function listGeneration() {
+    function listGeneration(data) {
         document.createElement(ul);
-        for (let i = 0; i < 5; i++) {
+
+        for (let i = 0; i < data.length; i++) {
+            el = data[i]
             const listCreate = document.createElement(li);
             const textNode = document.createTextNode()
 
@@ -139,14 +129,47 @@
 
     }
 
-    function listGeneration() {
-        document.createElement(ul);
-        for (let i = 0; i < 5; i++) {
-            const listCreate = document.createElement(li);
-            const textNode = document.createTextNode()
+    function createList(data) {
+        const list = document.getElementById('list');
+        list.innerHTML = '';
 
+        for (let i = 0; i < data.length; i++) {
+            el = data[i]
+            const listCreate = document.createElement('div');
+            listCreate.className = 'class_entry';
+
+            const title_div = document.createElement('div');
+            const title = document.createElement('h3');
+            const titleLink = document.createElement('a');
+            titleLink.href = `${el.website}`;
+            titleLink.text = el.centre_name
+            
+            title.appendChild(titleLink);
+            title_div.appendChild(title);
+            listCreate.appendChild(title);
+
+            const distance = document.createElement('p');
+            const distanceText = document.createTextNode(`Distance: ${el.distance} km`);
+            distance.appendChild(distanceText);
+            listCreate.appendChild(distance);
+
+            // parse date
+
+            const start_time = new Date(el.time_start);
+            const end_time = new Date(el.time_end);
+
+            const date = document.createElement('p');
+            const dateText = document.createTextNode(`Date: ${start_time.toLocaleDateString()}`);
+            date.appendChild(dateText);
+            listCreate.appendChild(date);
+
+            const time = document.createElement('p');
+            const timeText = document.createTextNode(`Time: ${getTime(start_time)} - ${getTime(end_time)}`);
+            time.appendChild(timeText);
+            listCreate.appendChild(time);
+
+            list.appendChild(listCreate);
         }
-
     }
 
     function getLevel() {
@@ -194,30 +217,65 @@
 
     async function updateMap(loc_x, loc_y, data){
         
-        console.log(data.length)
-        
         try {
             
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+
+
             L.marker([loc_x, loc_y], {icon: redIcon}).addTo(map)
             map.panTo([loc_x, loc_y]);
             
-            // for (let i = 0; i < 2; i++) {
-            //     const el = data[i];
-            //     L.marker([el.x_loc, el.y_loc]).addTo(map)
-            //         .bindPopup(el.centre_name)
-            //         .on('click', () => {
-            //             document.getElementById('centre_name').innerHTML = el.centre_name;
-            //         });
-            // }
+            var centre_list = []
+            var centre_count = {}
 
+            // Append centres to list
+            for (let i = 0; i < data.length; i++) {
+
+                    let el = {
+                        id: data[i].centre_id,
+                        centre_name : data[i].centre_name,
+                        x_loc : data[i].x_loc,
+                        y_loc : data[i].y_loc
+                    }
+                    
+                    if (!centre_list.includes(el)) {
+                    centre_list.push(el)
+                }
+
+                centre_count[data[i].centre_id] = centre_count[data[i].centre_id] ? centre_count[data[i].centre_id] + 1 : 1
+            }
+
+            for (let i = 0; i < centre_list.length; i++) {
+                let el = centre_list[i];
+
+                let text = `${el.centre_name} - ${centre_count[el.id]} classes`
+
+                console.log(text)
+
+                L.marker([el.x_loc, el.y_loc]).addTo(map)
+                    .bindPopup(text)
+                    .openPopup()
+            }
+            
         } catch (error) {
             console.error('Error initializing map:', error);
         }
     }
 
+    function getTime(date){
+        const hours = date.getHours().toString().padStart(2, '0')
+        const minutes = date.getMinutes().toString().padStart(2, '0')
+        return `${hours}:${minutes}`
+    }
+
     async function updateAll(get_location) {
         const data = await updateData(get_location);
         updateMap(loc_x, loc_y, data);
+        createList(data);
     }
 
     initAll()

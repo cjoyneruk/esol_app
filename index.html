@@ -121,6 +121,7 @@
             document.getElementById('view_switch').innerHTML = "Map View";
             document.getElementById('map').style.display = 'none';
             document.getElementById('list').style.display = 'block';
+            listGeneration(data);
         } else {
             document.getElementById('view_switch').innerHTML = "List View";
             document.getElementById('list').style.display = 'none';
@@ -129,25 +130,38 @@
 
     }
 
-    function listGeneration() {
-        document.createElement(ul);
-        for (let i = 0; i < 5; i++) {
-            const listCreate = document.createElement(li);
-            const textNode = document.createTextNode()
+    function listGeneration(data) {
+        const listLocater = document.getElementById("list");
 
-        }
+        // Clear previous content in the list
+        listLocater.innerHTML = '';
 
+        data.forEach(function (element) {
+            const ulCreate = document.createElement('ul');
+            
+            const liLevel = document.createElement('li');
+            const levelNode = document.createTextNode("Level: " + element.level);
+            liLevel.appendChild(levelNode);
+            ulCreate.appendChild(liLevel);
+
+            const liCenter = document.createElement('li');
+            const centreNode = document.createTextNode("Centre: " + element.centre_name);
+            liCenter.appendChild(centreNode);
+            ulCreate.appendChild(liCenter);
+
+            const liStartTime = document.createElement('li');
+            const startTimeNode = document.createTextNode("Start Time: " + element.time_start);
+            liStartTime.appendChild(startTimeNode);
+            ulCreate.appendChild(liStartTime);
+
+            listLocater.appendChild(ulCreate);
+        });
     }
 
-    function listGeneration() {
-        document.createElement(ul);
-        for (let i = 0; i < 5; i++) {
-            const listCreate = document.createElement(li);
-            const textNode = document.createTextNode()
 
-        }
+    
 
-    }
+
 
     function getLevel() {
         return document.getElementById("level_dropdown").value;
